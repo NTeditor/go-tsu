@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/nteditor/go-tsu/internal/env"
 	"github.com/spf13/cobra"
@@ -11,7 +12,7 @@ import (
 var (
 	shell   string
 	user    string
-	command string
+	command []string
 )
 
 var version = "0.0.0"
@@ -22,8 +23,9 @@ var rootCmd = &cobra.Command{
 		termuxFS := "/data/data/com.termux/files"
 		termuxPrefix := fmt.Sprintf("%s/usr", termuxFS)
 		env := env.NewEnv(termuxFS, termuxPrefix, user)
-		if command != "nil" {
-			command := env.RunCommand(shell, command)
+		stringCommand := strings.Join(command, " ")
+		if stringCommand != "nil" {
+			command := env.RunCommand(shell, stringCommand)
 			if err := command.Run(); err != nil {
 				panic(err)
 			}
@@ -46,7 +48,7 @@ var versionCmd = &cobra.Command{
 func init() {
 	rootCmd.Flags().StringVarP(&shell, "shell", "s", os.Getenv("SHELL"), "")
 	rootCmd.Flags().StringVarP(&user, "user", "u", "root", "")
-	rootCmd.Flags().StringVarP(&command, "command", "c", "nil", "")
+	rootCmd.Flags().StringSliceVarP(&command, "command", "c", []string{"nil"}, "")
 	rootCmd.AddCommand(versionCmd)
 }
 
