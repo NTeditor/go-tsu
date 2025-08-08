@@ -8,10 +8,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-
 var shell string
 var user string
+
+var version = "0.0.0"
 
 var rootCmd = &cobra.Command{
 	Use: "go-tsu",
@@ -26,9 +26,17 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+var versionCmd = &cobra.Command{
+	Use: "version",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Версия: %v\nЛицензия: GPL 3.0\n", version)
+	},
+}
+
 func init() {
 	rootCmd.Flags().StringVarP(&shell, "shell", "s", os.Getenv("SHELL"), "")
 	rootCmd.Flags().StringVarP(&user, "user", "u", "root", "")
+	rootCmd.AddCommand(versionCmd)
 }
 
 func Exec() {
@@ -36,3 +44,4 @@ func Exec() {
 		panic(err)
 	}
 }
+
