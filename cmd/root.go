@@ -16,7 +16,10 @@ var (
 	command string
 )
 
-var Version = "1.0.0-rc1"
+var (
+	Version   = "1.0.0"
+	BuildType = "user"
+)
 
 var rootCmd = &cobra.Command{
 	Use: "go-tsu",
@@ -45,17 +48,18 @@ var rootCmd = &cobra.Command{
 var versionCmd = &cobra.Command{
 	Use: "version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf(`--- go-tsu ---
+		fmt.Printf(`---------------- go-tsu ----------------
 
 Version: %s
+Build: %s
 License: GPL v3.0
 
 Libraries used:
   • cobra: v1.9.1 (License: Apache 2.0)
   • logrus: v1.9.3 (License: MIT)
 
-----------------------
-`, Version)
+-----------------------------------------
+`, Version, BuildType)
 	},
 }
 
@@ -73,4 +77,3 @@ func Exec() {
 		}).Errorf("failed to parse arguments")
 	}
 }
-
