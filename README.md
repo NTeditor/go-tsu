@@ -5,4 +5,7 @@
     - **config.fish**: `alias tsu="$HOME/go/bin/go-tsu"`
 
 # Проблемы
-- При закрыти **bash** может быть ошибка `exit status 1`
+
+
+
+- При закрытие **bash** может быть ошибка `exit status 1`
