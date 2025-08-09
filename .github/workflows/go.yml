@@ -26,8 +26,8 @@ jobs:
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.event.inputs.version }}
-        name: Release ${{ github.event.inputs.version }}
+        tag_name: v${{ github.event.inputs.version }}
+        name: v${{ github.event.inputs.version }}
         files: |
           ./build/go-tsu
       env:
