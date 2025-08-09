@@ -11,11 +11,12 @@ import (
 )
 
 func main() {
-	initLogger()
+	close := initLogger()
+	defer close()
 	cmd.Exec()
 }
 
-func initLogger() {
+func initLogger() func() error {
 	log.AddHook(&logger.StdoutHook{
 		LogLevels: []log.Level{
 			log.PanicLevel,
@@ -54,5 +55,6 @@ func initLogger() {
 		},
 		File: file,
 	})
+	return file.Close
 }
 
