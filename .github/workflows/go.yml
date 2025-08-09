@@ -21,7 +21,7 @@ jobs:
         go-version: '1.24'
 
     - name: Build-arm64
-      run: GOOS=android GOARCH=arm64 CGO_ENABLED=0 go build -v ./... -ldflags "-X github.com/nteditor/go-tsu/cmd.BuildType=github-action-(${{ github.run_id }})"
+      run: GOOS=android GOARCH=arm64 CGO_ENABLED=0 go build -v ./... -ldflags="-X github.com/nteditor/go-tsu/cmd.BuildType=github-action-(${{ github.run_id }})"
 
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
