@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/nteditor/go-tsu/internal/env"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +15,7 @@ var (
 	command string
 )
 
-var version = "0.0.0"
+var version = "1.0.0-rc1"
 
 var rootCmd = &cobra.Command{
 	Use: "go-tsu",
@@ -23,14 +24,18 @@ var rootCmd = &cobra.Command{
 		termuxPrefix := fmt.Sprintf("%s/usr", termuxFS)
 		env := env.NewEnv(termuxFS, termuxPrefix, user)
 		if command != "nil" {
-			command := env.RunCommand(shell, command)
+			command := env.NewCommand(shell, command)
 			if err := command.Run(); err != nil {
-				panic(err)
+				log.WithFields(log.Fields{
+					"err": err,
+				}).Errorf("failed execute command")
 			}
 		} else {
 			shell := env.NewShell(shell)
 			if err := shell.Run(); err != nil {
-				panic(err)
+				log.WithFields(log.Fields{
+					"err": err,
+				}).Errorf("failed execute shell")
 			}
 		}
 	},
@@ -52,6 +57,7 @@ func init() {
 
 func Exec() {
 	if err := rootCmd.Execute(); err != nil {
-		panic(err)
+		log.Panicf(err.Error())
 	}
 }
+

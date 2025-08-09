@@ -16,20 +16,6 @@ func main() {
 }
 
 func initLogger() {
-	var logFile string
-	if runtime.GOOS == "android" {
-		logFile = "/data/data/com.termux/files/usr/var/log/go-tsu.json"
-	} else {
-		logFile = "go-tsu.json"
-	}
-
-	file, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o644)
-	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err.Error(),
-		}).Fatalf("Failed create file: %s", logFile)
-	}
-
 	log.AddHook(&logger.StdoutHook{
 		LogLevels: []log.Level{
 			log.PanicLevel,
@@ -44,6 +30,23 @@ func initLogger() {
 		},
 	})
 
+	log.SetOutput(io.Discard)
+
+	if runtime.GOOS != "android" {
+		log.WithFields(log.Fields{
+			"runtime.GOOS": runtime.GOOS,
+		}).Fatalf("runtime.GOOS not equals android")
+	}
+
+	logFile := "/data/data/com.termux/files/usr/var/log/go-tsu.json"
+
+	file, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o644)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err.Error(),
+		}).Fatalf("failed create file: %s", logFile)
+	}
+
 	log.AddHook(&logger.FileHook{
 		LogLevels: log.AllLevels,
 		Formatter: &log.JSONFormatter{
@@ -51,5 +54,5 @@ func initLogger() {
 		},
 		File: file,
 	})
-	log.SetOutput(io.Discard)
 }
+

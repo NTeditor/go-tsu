@@ -1,8 +1,10 @@
 package env
 
 import (
-	"strings"
 	"os/exec"
+	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -10,16 +12,18 @@ const (
 	apatchBusyBox = "/data/adb/ap/bin/busybox"
 )
 
-func (e env) getBusybox(suFile string) string {
-	cmd := exec.Command(suFile, "-v")
-	output, err := cmd.Output()
+func (e env) getBusybox() string {
+	cmd := exec.Command(e.suFile, "-v")
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		panic(err)
+		log.WithFields(log.Fields{
+			"err": err,
+		}).Fatalf("failed check root provider")
 	}
 
 	lowerOutput := strings.ToLower(string(output))
 	if strings.Contains(lowerOutput, "magisk") {
 		return magiskBusyBox
 	}
-	panic("Root provider not suppport")
+	return "/system/bin/toybox"
 }
