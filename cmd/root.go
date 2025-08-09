@@ -47,7 +47,6 @@ func init() {
 	rootCmd.Flags().StringVarP(&shell, "shell", "s", os.Getenv("SHELL"), "")
 	rootCmd.Flags().StringVarP(&user, "user", "u", "root", "")
 	rootCmd.Flags().StringVarP(&command, "command", "c", "nil", "")
-	rootCmd.DisableFlagParsing = false
 	rootCmd.AddCommand(versionCmd)
 }
 
