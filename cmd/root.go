@@ -64,9 +64,9 @@ Libraries used:
 }
 
 func init() {
-	rootCmd.Flags().StringVarP(&shell, "shell", "s", os.Getenv("SHELL"), "")
-	rootCmd.Flags().StringVarP(&user, "user", "u", "root", "")
-	rootCmd.Flags().StringVarP(&command, "command", "c", "nil", "")
+	rootCmd.Flags().StringVarP(&shell, "shell", "s", os.Getenv("SHELL"), "Run SHELL instead of the current shell")
+	rootCmd.Flags().StringVarP(&user, "user", "u", "root", "Run shell as USER")
+	rootCmd.Flags().StringVarP(&command, "command", "c", "nil", "Pass COMMAND to the invoked shell")
 	rootCmd.AddCommand(versionCmd)
 }
 
@@ -74,6 +74,6 @@ func Exec() {
 	if err := rootCmd.Execute(); err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
-		}).Errorf("failed to parse arguments")
+		}).Debugf("failed to parse arguments")
 	}
 }
