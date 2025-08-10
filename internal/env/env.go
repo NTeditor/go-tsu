@@ -54,6 +54,6 @@ func (e env) genEnvVars() []string {
 	}
 	log.WithFields(log.Fields{
 		"envVars": envVars,
-	}).Info("generated environment variables")
+	}).Infof("generated environment variables")
 	return envVars
 }

@@ -28,18 +28,30 @@ var rootCmd = &cobra.Command{
 		termuxPrefix := filepath.Join(termuxFS, "usr")
 		env := env.NewEnv(termuxFS, termuxPrefix, user)
 		if command != "nil" {
-			command := env.NewCommand(shell, command)
+			command, err := env.NewCommand(shell, command)
+			if err != nil {
+				log.WithFields(log.Fields{
+					"err": err,
+				}).Fatalf("failed execute command")
+			}
+
 			if err := command.Run(); err != nil {
 				log.WithFields(log.Fields{
 					"err": err,
-				}).Errorf("failed execute command")
+				}).Fatalf("failed execute command")
 			}
 		} else {
-			shell := env.NewShell(shell)
+			shell, err := env.NewShell(shell)
+			if err != nil {
+				log.WithFields(log.Fields{
+					"err": err,
+				}).Fatalf("failed execute shell")
+			}
+
 			if err := shell.Run(); err != nil {
 				log.WithFields(log.Fields{
 					"err": err,
-				}).Errorf("failed execute shell")
+				}).Fatalf("failed execute shell")
 			}
 		}
 	},
